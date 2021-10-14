@@ -1,0 +1,12 @@
+<div class="fullpage">
+    <div class="text" *ngFor="let def of dice.data.dice">
+        {{def.name}} 
+        <span class="button" (click)="addDie(def)">+</span>
+    </div>
+    <div class="cupdie" *ngFor="let die of cup">
+        <span *ngFor="let face of die.def.faces, let index=index" class="face rolled-{{index===die.index}}">{{face}}</span>
+    </div>
+    <div class="text" *ngIf="cup.length > 0">
+        <span class="button" (click)="rollCup()">Roll</span>
+    </div>
+</div>

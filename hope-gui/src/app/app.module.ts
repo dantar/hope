@@ -6,10 +6,12 @@ import { AppComponent } from './app.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
+import { CupOfDiceComponent } from './components/cup-of-dice/cup-of-dice.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CupOfDiceComponent
   ],
   imports: [
     BrowserModule,
