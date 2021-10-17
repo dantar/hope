@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ChallengeCommonsService, ChallengeItem } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
 
 @Component({
@@ -8,12 +9,22 @@ import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-com
 })
 export class CupOfDiceComponent implements OnInit {
 
-  constructor(public dice: DiceCommonsService) { }
+  constructor(
+    public dice: DiceCommonsService,
+    private chalreg: ChallengeCommonsService,
+    ) { }
 
   cup: RolledDie[];
+  challenge: ChallengeItem;
 
   ngOnInit(): void {
     this.cup = [];
+    this.challenge = this.chalreg.items['mutants'];
+    let cancel: DieDef = {
+      name: 'cancel',
+      faces: ['-', '-', '-', '(cancel)', '(cancel)', 'cancel']
+    };
+    this.challenge.actions.forEach(action => this.addDie(cancel));
   }
 
   addDie(def: DieDef) {

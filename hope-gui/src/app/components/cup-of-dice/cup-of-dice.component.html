@@ -1,4 +1,11 @@
 <div class="fullpage">
+    <div *ngIf="challenge" class="text">
+        <div>{{challenge.name}}</div>
+        <div *ngFor="let action of challenge.actions">
+            <span>{{action.required}}</span>
+            <span>{{action.description}}</span>
+        </div>
+    </div>
     <div class="text" *ngFor="let def of dice.data.dice">
         {{def.name}} 
         <span class="button" (click)="addDie(def)">+</span>
