@@ -1,9 +1,10 @@
 <div class="fullpage">
+    <div class="text">Bit: {{bits}}</div>
     <div *ngIf="challenge" class="text">
         <div>{{challenge.name}}</div>
-        <div *ngFor="let action of challenge.actions">
-            <span>{{action.required}}</span>
-            <span>{{action.description}}</span>
+        <div *ngFor="let action of challenge.actions; let index = index" [ngClass]="{challenge: true, current: index===actionId}">
+            <span class="cost">{{action.required}}</span>
+            <span class="description" (click)="index!=actionId || acceptAction(action)">{{action.description}}</span>
         </div>
     </div>
     <div class="text" *ngFor="let def of dice.data.dice">

@@ -12,3 +12,20 @@
 .cupdie .rolled-true {
     color: white;
 }
+
+.challenge {
+    opacity: 0.5;
+    .cost {
+        background-color: lightgray;
+        color: black;
+        padding: 1px;
+        font-size: 0.8em;
+        margin: 2px;
+    }
+    .description {
+        margin: 2px;
+    }
+}
+.challenge.current {
+    opacity: 1;
+}
