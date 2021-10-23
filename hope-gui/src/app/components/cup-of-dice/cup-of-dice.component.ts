@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
+import { GameService } from 'src/app/services/game.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-cup-of-dice',
@@ -11,6 +13,8 @@ export class CupOfDiceComponent implements OnInit {
 
   constructor(
     public dice: DiceCommonsService,
+    public shared: SharedDataService,
+    private game: GameService,
     private chalreg: ChallengeCommonsService,
     ) { }
 
@@ -18,17 +22,14 @@ export class CupOfDiceComponent implements OnInit {
   challenge: ChallengeItem;
   bits: number;
   actionId: number;
+  tags: string[];
 
   ngOnInit(): void {
     this.cup = [];
     this.actionId = 0;
-    this.bits = 3;
-    this.challenge = this.chalreg.items['mutants'];
-    let cancel: DieDef = {
-      name: 'cancel',
-      faces: ['-', '-', '-', '(cancel)', '(cancel)', 'cancel']
-    };
-    this.challenge.actions.forEach(action => this.addDie(cancel));
+    this.challenge = this.shared.data.play.challenge;
+    this.tags = this.shared.data.play.tags;
+    this.challenge.actions.forEach(action => this.addDie(this.dice.defs['cancel']));
   }
 
   addDie(def: DieDef) {
@@ -44,6 +45,10 @@ export class CupOfDiceComponent implements OnInit {
   acceptAction(action: ChallengeAction) {
     console.log(action);
     this.actionId = this.actionId +1;
+  }
+
+  clickFace(die: RolledDie) {
+    console.log(die.def.faces[die.index]);
   }
 
 }

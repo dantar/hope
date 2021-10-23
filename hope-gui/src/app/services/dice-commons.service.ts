@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { GameData } from './game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,16 @@ export class DiceCommonsService {
   data: DiceData;
   defs: {[name:string]: DieDef};
 
+  static _items: FaceEffect[] = [];
+  static registerFace(item: FaceEffect) {
+    this._items.push(item);
+  }
+
+  faces: {[id: string]: FaceEffect};
+
   constructor(private http: HttpClient) {
+    this.faces = {};
+    DiceCommonsService._items.forEach(m => this.faces[m.name] = m);
     this.http.get<DiceData>('./assets/dice.json').subscribe(data => {
       this.data = data;
       this.defs = {};
@@ -47,3 +57,15 @@ export class RolledDie {
 export class DiceBatch {
   batch: DieDef[];
 }
+
+export class FaceEffect {
+  name: string;
+  execute: (game: GameData) => void;
+}
+
+DiceCommonsService.registerFace({
+  name: 'hit',
+  execute: (game: GameData) => {
+    
+  }
+});

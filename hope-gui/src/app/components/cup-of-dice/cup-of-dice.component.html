@@ -1,5 +1,8 @@
 <div class="fullpage">
-    <div class="text">Bit: {{bits}}</div>
+    <div class="text">Bit: {{shared.data.play.bits}}</div>
+    <div class="text">
+        <span *ngFor="let tag of tags">{{tag}}</span>
+    </div>
     <div *ngIf="challenge" class="text">
         <div>{{challenge.name}}</div>
         <div *ngFor="let action of challenge.actions; let index = index" [ngClass]="{challenge: true, current: index===actionId}">
@@ -12,7 +15,8 @@
         <span class="button" (click)="addDie(def)">+</span>
     </div>
     <div class="cupdie" *ngFor="let die of cup">
-        <span *ngFor="let face of die.def.faces, let index=index" class="face rolled-{{index===die.index}}">{{face}}</span>
+        <span *ngFor="let face of die.def.faces, let index=index" class="face rolled-{{index===die.index}}"
+            (click)="index != die.index || clickFace(die)">{{face}}</span>
     </div>
     <div class="text" *ngIf="cup.length > 0">
         <span class="button" (click)="rollCup()">Roll</span>

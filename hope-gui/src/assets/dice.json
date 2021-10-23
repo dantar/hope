@@ -1,6 +1,7 @@
 {
     "name": "hope",
     "dice": [
-        {"name": "fight", "faces": ["miss locked", "miss", "(hit)", "hit", "hit", "crit"]}
+        {"name": "fight", "faces": ["miss locked", "miss", "(hit)", "hit", "hit", "crit"]},
+        {"name": "cancel", "faces": ["-", "-", "-", "(cancel)", "(cancel)", "cancel"]}
     ]
 }
