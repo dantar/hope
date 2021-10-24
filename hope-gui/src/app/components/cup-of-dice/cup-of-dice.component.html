@@ -1,13 +1,14 @@
 <div class="fullpage">
     <div class="text">Bit: {{shared.data.play.bits}}</div>
+    <div class="text">Wounds: {{shared.data.play.wounded}}</div>
     <div class="text">
         <span *ngFor="let tag of tags">{{tag}}</span>
     </div>
-    <div *ngIf="challenge" class="text">
-        <div>{{challenge.name}}</div>
-        <div *ngFor="let action of challenge.actions; let index = index" [ngClass]="{challenge: true, current: index===actionId}">
-            <span class="cost">{{action.required}}</span>
-            <span class="description" (click)="index!=actionId || acceptAction(action)">{{action.description}}</span>
+    <div *ngIf="encounter" class="text">
+        <div>{{encounter.challenge.name}}</div>
+        <div *ngFor="let action of encounter.actions(); let index = index" [ngClass]="{challenge: true, current: action.isCurrent}">
+            <span class="cost">{{action.def.required}}</span>
+            <span class="description" (click)="!action.isCurrent || acceptAction(action)">{{action.def.description}}</span>
         </div>
     </div>
     <div class="text" *ngFor="let def of dice.data.dice">

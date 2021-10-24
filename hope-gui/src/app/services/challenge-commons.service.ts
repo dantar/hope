@@ -35,11 +35,11 @@ ChallengeCommonsService.registerItem({
   name: 'mutants',
   actions: [
       {
-          required: 'hit', 
-          description: '1 wound', 
-          action: game => {
-              game.actionWound();
-          },
+        required: 'hit', 
+        description: '1 wound', 
+        action: game => {
+            game.actionWound();
+        },
       },
       {
         required: 'hit', 

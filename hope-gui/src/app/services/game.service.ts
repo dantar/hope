@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChallengeCommonsService, ChallengeItem } from './challenge-commons.service';
+import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from './challenge-commons.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class GameService {
   
   newGame(): GameData {
     let game = new GameData();
-    game.play.challenge = this.challenges.items['mutants'];
+    game.play.encounter = new Encounter(this.challenges.items['mutants']);
     return game;
   }
 
@@ -41,13 +41,41 @@ export class ScenarioData {
 
 }
 
-export class PlayData {
+export class EncounterAction {
+  def: ChallengeAction;
+  isCurrent: boolean;
+  constructor(def, isCurrent) {
+    this.def = def;
+    this.isCurrent = isCurrent;  
+  }
+}
+
+export class Encounter {
   challenge: ChallengeItem;
+  actionId: number; 
+  constructor(challenge: ChallengeItem) {
+    this.challenge = challenge;
+    this.actionId = 0;
+  }
+  current(): ChallengeAction {
+    return this.challenge.actions[this.actionId];
+  }
+  nextAction() {
+    this.actionId = this.actionId + 1;
+  }
+  actions(): EncounterAction[] {
+    return this.challenge.actions.map(a => new EncounterAction(a, this.actionId === this.challenge.actions.indexOf(a)))
+  }
+}
+
+export class PlayData {
+  encounter: Encounter;
+  actionIndex: number;
   bits: number;
   tags: string[];
   wounded: number;
   constructor() {
-    this.challenge = null;
+    this.encounter = null;
     this.wounded = 0;
     this.bits = 3;
     this.tags = [];

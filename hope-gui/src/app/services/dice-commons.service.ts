@@ -63,9 +63,37 @@ export class FaceEffect {
   execute: (game: GameData) => void;
 }
 
+
+
 DiceCommonsService.registerFace({
   name: 'hit',
   execute: (game: GameData) => {
-    
+    let action = game.play.encounter.current();
+    if (action.required === 'hit') {
+      game.play.encounter.nextAction();
+    } else {
+      game.play.tags.push('hit');
+    }
+  }
+});
+
+DiceCommonsService.registerFace({
+  name: '(hit)',
+  execute: (game: GameData) => {
+    let action = game.play.encounter.current();
+    if (action.required === '(hit)') {
+      game.play.encounter.nextAction();
+    } else {
+      if (game.play.tags.includes('(hit)')) {
+        game.play.tags.splice(game.play.tags.indexOf('(hit)'), 1);
+        if (action.required === 'hit') {
+          game.play.encounter.nextAction();
+        } else {
+          game.play.tags.push('hit');
+        }
+      } else {
+        game.play.tags.push('(hit)');
+      }
+    }
   }
 });
