@@ -48,6 +48,14 @@ export class CupOfDiceComponent implements OnInit {
 
   clickFace(die: RolledDie) {
     console.log(die.def.faces[die.index]);
+    let face = this.dice.faces[die.def.faces[die.index]];
+    face.execute(this.shared.data);
+    this.cup.splice(this.cup.indexOf(die), 1);
+  }
+
+  doneEncounter() {
+    this.game.newEncounter(this.shared.data);
+    this.ngOnInit();
   }
 
 }

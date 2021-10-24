@@ -12,8 +12,12 @@ export class GameService {
   
   newGame(): GameData {
     let game = new GameData();
-    game.play.encounter = new Encounter(this.challenges.items['mutants']);
+    this.newEncounter(game);
     return game;
+  }
+  
+  newEncounter(game: GameData) {
+    game.play.encounter = new Encounter(this.challenges.items['mutants']);
   }
 
 }
@@ -65,6 +69,9 @@ export class Encounter {
   }
   actions(): EncounterAction[] {
     return this.challenge.actions.map(a => new EncounterAction(a, this.actionId === this.challenge.actions.indexOf(a)))
+  }
+  done(): boolean {
+    return this.actionId >= this.challenge.actions.length;
   }
 }
 

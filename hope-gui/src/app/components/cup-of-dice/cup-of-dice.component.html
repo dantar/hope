@@ -10,6 +10,7 @@
             <span class="cost">{{action.def.required}}</span>
             <span class="description" (click)="!action.isCurrent || acceptAction(action)">{{action.def.description}}</span>
         </div>
+        <div *ngIf="encounter.done()" (click)="doneEncounter()">Done!</div>
     </div>
     <div class="text" *ngFor="let def of dice.data.dice">
         {{def.name}} 
