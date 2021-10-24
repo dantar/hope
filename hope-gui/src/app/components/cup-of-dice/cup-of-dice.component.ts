@@ -22,6 +22,11 @@ export class CupOfDiceComponent implements OnInit {
   encounter: Encounter;
   bits: number;
   tags: string[];
+  tagToFace = {
+    '(hit)': 'hit',
+    '(cancel)': 'cancel',
+    '(crit)': 'crit',
+  }
 
   ngOnInit(): void {
     this.cup = [];
@@ -51,6 +56,13 @@ export class CupOfDiceComponent implements OnInit {
     let face = this.dice.faces[die.def.faces[die.index]];
     face.execute(this.shared.data);
     this.cup.splice(this.cup.indexOf(die), 1);
+  }
+
+  clickTag(tag: string) {
+    if (this.tagToFace[tag]) {
+      this.shared.data.payBits(1);
+      this.dice.faces[tag].execute(this.shared.data);  
+    }
   }
 
   doneEncounter() {

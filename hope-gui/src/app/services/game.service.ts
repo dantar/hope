@@ -23,6 +23,9 @@ export class GameService {
 }
 
 export class GameData {
+  payBits(howmany: number) {
+    this.play.bits = Math.max(0, this.play.bits - howmany);
+  }
 
   scenario: ScenarioData;
   play: PlayData

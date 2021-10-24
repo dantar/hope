@@ -64,7 +64,6 @@ export class FaceEffect {
 }
 
 
-
 DiceCommonsService.registerFace({
   name: 'hit',
   execute: (game: GameData) => {
@@ -73,6 +72,18 @@ DiceCommonsService.registerFace({
       game.play.encounter.nextAction();
     } else {
       game.play.tags.push('hit');
+    }
+  }
+});
+
+DiceCommonsService.registerFace({
+  name: 'crit',
+  execute: (game: GameData) => {
+    let action = game.play.encounter.current();
+    if (action.required === 'hit' || action.required === 'crit') {
+      game.play.encounter.nextAction();
+    } else {
+      game.play.tags.push('crit');
     }
   }
 });
@@ -94,6 +105,30 @@ DiceCommonsService.registerFace({
       } else {
         game.play.tags.push('(hit)');
       }
+    }
+  }
+});
+
+DiceCommonsService.registerFace({
+  name: '-',
+  execute: (game: GameData) => {}
+});
+
+DiceCommonsService.registerFace({
+  name: 'cancel',
+  execute: (game: GameData) => {
+    game.play.encounter.nextAction();
+  }
+});
+
+DiceCommonsService.registerFace({
+  name: '(cancel)',
+  execute: (game: GameData) => {
+    if (game.play.tags.includes('(cancel)')) {
+      game.play.encounter.nextAction();
+      game.play.tags.splice(game.play.tags.indexOf('(cancel)'), 1);
+    } else {
+      game.play.tags.push('(cancel)');
     }
   }
 });

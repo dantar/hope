@@ -2,7 +2,8 @@
     <div class="text">Bit: {{shared.data.play.bits}}</div>
     <div class="text">Wounds: {{shared.data.play.wounded}}</div>
     <div class="text">
-        <span *ngFor="let tag of tags">{{tag}}</span>
+        <span *ngFor="let tag of tags" [ngClass]="{tag: true, enabled: shared.data.play.bits > 0}" 
+            (click)="shared.data.play.bits === 0 || clickTag(tag)">{{tag}}</span>
     </div>
     <div *ngIf="encounter" class="text">
         <div>{{encounter.challenge.name}}</div>
