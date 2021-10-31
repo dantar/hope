@@ -7,11 +7,13 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { CupOfDiceComponent } from './components/cup-of-dice/cup-of-dice.component';
+import { MainBoardComponent } from './components/main-board/main-board.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CupOfDiceComponent
+    CupOfDiceComponent,
+    MainBoardComponent
   ],
   imports: [
     BrowserModule,

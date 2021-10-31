@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
 import { Encounter, EncounterAction, GameService } from 'src/app/services/game.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
-  selector: 'app-cup-of-dice',
+  selector: '[app-cup-of-dice]',
   templateUrl: './cup-of-dice.component.html',
   styleUrls: ['./cup-of-dice.component.scss']
 })
@@ -19,7 +19,7 @@ export class CupOfDiceComponent implements OnInit {
     ) { }
 
   cup: RolledDie[];
-  encounter: Encounter;
+  @Input() encounter: Encounter;
   bits: number;
   tags: string[];
   tagToFace = {
@@ -68,7 +68,8 @@ export class CupOfDiceComponent implements OnInit {
   }
 
   doneEncounter() {
-    this.game.newEncounter(this.shared.data);
+    this.game.doneEncounter(this.shared.data);
+    //this.game.newEncounter(this.shared.data);
     this.ngOnInit();
   }
 

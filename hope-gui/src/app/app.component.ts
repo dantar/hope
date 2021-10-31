@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DiceCommonsService } from './services/dice-commons.service';
+import { SharedDataService } from './services/shared-data.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,10 @@ import { DiceCommonsService } from './services/dice-commons.service';
 export class AppComponent {
   title = 'hope-gui';
 
-  constructor(public dice: DiceCommonsService) {
+  constructor(
+    public dice: DiceCommonsService,
+    public shared: SharedDataService,
+    ) {
     
   }
 

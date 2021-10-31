@@ -1,5 +1,8 @@
-<div class="bg">
+<div class="bg" *ngIf="shared.data">
   <div *ngIf="dice.defs">
     <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="shared.data.play.encounter">
+    <div app-cup-of-dice [encounter]="shared.data.play.encounter"></div>
   </div>
 </div>

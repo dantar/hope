@@ -5,7 +5,7 @@ import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from './chall
   providedIn: 'root'
 })
 export class GameService {
-  
+
   constructor(
     private challenges: ChallengeCommonsService,
   ) { }
@@ -20,6 +20,10 @@ export class GameService {
     game.play.encounter = new Encounter(this.challenges.items['mutants']);
   }
 
+  doneEncounter(data: GameData) {
+    data.play.encounter = null;
+  }
+  
 }
 
 export class GameData {
