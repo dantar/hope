@@ -71,28 +71,6 @@ export class EncounterAction {
   }
 }
 
-// DEBT: remove me
-export class Encounter {
-  challenge: ChallengeDef;
-  actionId: number; 
-  constructor(challenge: ChallengeDef) {
-    this.challenge = challenge;
-    this.actionId = 0;
-  }
-  current(): ChallengeAction {
-    return this.challenge.actions[this.actionId];
-  }
-  nextAction() {
-    this.actionId = this.actionId + 1;
-  }
-  actions(): EncounterAction[] {
-    return this.challenge.actions.map(a => new EncounterAction(a, this.actionId === this.challenge.actions.indexOf(a)))
-  }
-  done(): boolean {
-    return this.actionId >= this.challenge.actions.length;
-  }
-}
-
 export class PlayData {
   scene: GameScene;
   actionIndex: number;

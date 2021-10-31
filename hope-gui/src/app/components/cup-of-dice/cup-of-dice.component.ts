@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChallengeAction, ChallengeCommonsService, ChallengeDef } from 'src/app/services/challenge-commons.service';
+import { ChallengeCommonsService, ChallengeDef } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
-import { Encounter, EncounterAction, GameScene, GameService } from 'src/app/services/game.service';
+import { EncounterAction, GameScene, GameService } from 'src/app/services/game.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
