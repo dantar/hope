@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from 'src/app/services/challenge-commons.service';
+import { ChallengeAction, ChallengeCommonsService, ChallengeDef } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
-import { Encounter, EncounterAction, GameService } from 'src/app/services/game.service';
+import { Encounter, EncounterAction, GameScene, GameService } from 'src/app/services/game.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
@@ -19,7 +19,9 @@ export class CupOfDiceComponent implements OnInit {
     ) { }
 
   cup: RolledDie[];
-  @Input() encounter: Encounter;
+  @Input() scene: GameScene;
+  encounter: GameSceneWrap;
+  
   bits: number;
   tags: string[];
   tagToFace = {
@@ -30,7 +32,7 @@ export class CupOfDiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.cup = [];
-    this.encounter = this.shared.data.play.encounter;
+    this.encounter = new GameSceneWrap(this.scene);
     this.tags = this.shared.data.play.tags;
     this.encounter.challenge.actions.forEach(action => this.addDie(this.dice.defs['cancel']));
   }
@@ -46,13 +48,11 @@ export class CupOfDiceComponent implements OnInit {
   }
 
   acceptAction(action: EncounterAction) {
-    console.log(action);
     action.def.action(this.shared.data);
     this.encounter.nextAction();
   }
 
   clickFace(die: RolledDie) {
-    console.log(die.def.faces[die.index]);
     let face = this.dice.faces[die.def.faces[die.index]];
     if (face) {
       face.execute(this.shared.data);
@@ -69,8 +69,31 @@ export class CupOfDiceComponent implements OnInit {
 
   doneEncounter() {
     this.game.doneEncounter(this.shared.data);
-    //this.game.newEncounter(this.shared.data);
     this.ngOnInit();
+  }
+
+}
+
+class GameSceneWrap {
+
+  scene: GameScene;
+  challenge: ChallengeDef;
+
+  constructor(scene: GameScene) {
+    this.scene = scene;
+    this.challenge = ChallengeCommonsService.challenge(this.scene.current.name);
+  }
+
+  actions(): EncounterAction[] {
+    return this.challenge.actions.map(a => new EncounterAction(a, this.challenge.actions[this.scene.current.step] === a));
+  }
+
+  done(): boolean {
+    return this.scene.current.step >= this.challenge.actions.length;
+  }
+
+  nextAction() {
+    GameScene.nextAction(this.scene);
   }
 
 }

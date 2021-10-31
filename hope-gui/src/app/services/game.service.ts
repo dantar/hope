@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChallengeAction, ChallengeCommonsService, ChallengeItem } from './challenge-commons.service';
+import { ChallengeAction, ChallengeCommonsService, ChallengeDef } from './challenge-commons.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,16 +17,26 @@ export class GameService {
   }
   
   newEncounter(game: GameData) {
-    game.play.encounter = new Encounter(this.challenges.items['mutants']);
+    game.play.scene = new GameScene();
+    game.play.scene.current = new EncounterPlan('mutants');
   }
 
   doneEncounter(data: GameData) {
-    data.play.encounter = null;
+    GameData.endScene(data);
   }
   
 }
 
 export class GameData {
+
+  static endScene(data: GameData) {
+    data.play.scene = null;
+  }
+
+  static current(game: GameData) {
+    return ChallengeCommonsService.challenge(game.play.scene.current.name).actions[game.play.scene.current.step];
+  }
+
   payBits(howmany: number) {
     this.play.bits = Math.max(0, this.play.bits - howmany);
   }
@@ -61,10 +71,11 @@ export class EncounterAction {
   }
 }
 
+// DEBT: remove me
 export class Encounter {
-  challenge: ChallengeItem;
+  challenge: ChallengeDef;
   actionId: number; 
-  constructor(challenge: ChallengeItem) {
+  constructor(challenge: ChallengeDef) {
     this.challenge = challenge;
     this.actionId = 0;
   }
@@ -83,15 +94,45 @@ export class Encounter {
 }
 
 export class PlayData {
-  encounter: Encounter;
+  scene: GameScene;
   actionIndex: number;
   bits: number;
   tags: string[];
   wounded: number;
   constructor() {
-    this.encounter = null;
     this.wounded = 0;
     this.bits = 3;
     this.tags = [];
+    this.scene = null;
   }
+}
+
+export class GameScene {
+  done: EncounterPlan[];
+  current: EncounterPlan;
+  line: EncounterPlan[];
+  rewards: string[];
+  constructor() {
+    this.done = [];
+    this.current = null;
+    this.line = [];
+    this.rewards = [];
+  }
+  static nextAction(scene: GameScene) {
+    scene.current.step = scene.current.step +1;
+  }
+}
+
+export class EncounterPlan {
+ name: string;
+ step: number;
+ constructor(name: string) {
+  this.name = name;
+  this.step = 0;
+ }
+}
+
+export class RewardDef {
+  name: string;
+  collect: (data: GameData) => void;
 }

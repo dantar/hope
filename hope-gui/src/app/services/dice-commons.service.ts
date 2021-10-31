@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GameData } from './game.service';
+import { GameData, GameScene } from './game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -67,9 +67,9 @@ export class FaceEffect {
 DiceCommonsService.registerFace({
   name: 'hit',
   execute: (game: GameData) => {
-    let action = game.play.encounter.current();
+    let action = GameData.current(game);
     if (action.required === 'hit') {
-      game.play.encounter.nextAction();
+      GameScene.nextAction(game.play.scene);
     } else {
       game.play.tags.push('hit');
     }
@@ -79,9 +79,9 @@ DiceCommonsService.registerFace({
 DiceCommonsService.registerFace({
   name: 'crit',
   execute: (game: GameData) => {
-    let action = game.play.encounter.current();
+    let action = GameData.current(game);
     if (action.required === 'hit' || action.required === 'crit') {
-      game.play.encounter.nextAction();
+      GameScene.nextAction(game.play.scene);
     } else {
       game.play.tags.push('crit');
     }
@@ -91,14 +91,14 @@ DiceCommonsService.registerFace({
 DiceCommonsService.registerFace({
   name: '(hit)',
   execute: (game: GameData) => {
-    let action = game.play.encounter.current();
+    let action = GameData.current(game);
     if (action.required === '(hit)') {
-      game.play.encounter.nextAction();
+      GameScene.nextAction(game.play.scene);
     } else {
       if (game.play.tags.includes('(hit)')) {
         game.play.tags.splice(game.play.tags.indexOf('(hit)'), 1);
         if (action.required === 'hit') {
-          game.play.encounter.nextAction();
+          GameScene.nextAction(game.play.scene);
         } else {
           game.play.tags.push('hit');
         }
@@ -117,7 +117,7 @@ DiceCommonsService.registerFace({
 DiceCommonsService.registerFace({
   name: 'cancel',
   execute: (game: GameData) => {
-    game.play.encounter.nextAction();
+    GameScene.nextAction(game.play.scene);
   }
 });
 
@@ -125,7 +125,7 @@ DiceCommonsService.registerFace({
   name: '(cancel)',
   execute: (game: GameData) => {
     if (game.play.tags.includes('(cancel)')) {
-      game.play.encounter.nextAction();
+      GameScene.nextAction(game.play.scene);
       game.play.tags.splice(game.play.tags.indexOf('(cancel)'), 1);
     } else {
       game.play.tags.push('(cancel)');

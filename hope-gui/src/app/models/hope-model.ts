@@ -1,2 +1,2 @@
-import { ChallengeCommonsService, ChallengeItem } from "../services/challenge-commons.service";
+import { ChallengeCommonsService, ChallengeDef } from "../services/challenge-commons.service";
 
