@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ChallengeAction, ChallengeCommonsService, ChallengeDef } from './challenge-commons.service';
+import { DieDef } from './dice-commons.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class GameService {
   
   newEncounter(game: GameData) {
     game.play.scene = new GameScene();
-    game.play.scene.current = new EncounterPlan('mutants');
+    game.play.scene.current = new EncounterData('mutants');
   }
 
   doneEncounter(data: GameData) {
@@ -51,6 +52,7 @@ export class GameData {
 
   actionWound() {
     this.play.wounded = this.play.wounded + 1 ;
+    this.play.pool.push('wounded');
   }
   actionFail() {
     
@@ -77,18 +79,20 @@ export class PlayData {
   bits: number;
   tags: string[];
   wounded: number;
+  pool: string[];
   constructor() {
     this.wounded = 0;
     this.bits = 3;
     this.tags = [];
     this.scene = null;
+    this.pool = [];
   }
 }
 
 export class GameScene {
-  done: EncounterPlan[];
-  current: EncounterPlan;
-  line: EncounterPlan[];
+  done: EncounterData[];
+  current: EncounterData;
+  line: EncounterData[];
   rewards: string[];
   constructor() {
     this.done = [];
@@ -101,7 +105,7 @@ export class GameScene {
   }
 }
 
-export class EncounterPlan {
+export class EncounterData {
  name: string;
  step: number;
  constructor(name: string) {
@@ -114,3 +118,40 @@ export class RewardDef {
   name: string;
   collect: (data: GameData) => void;
 }
+
+export class PoolCardDef {
+  name: string;
+  description: string;
+  keywords: string[];
+  draft: {[name: string]: (data: GameData, collector: (die: DieDef) => void) => void};
+  constructor(name: string) {
+    this.name = name;
+    this.draft = {};
+    this.keywords = [];
+  }
+  addDraft(name: string, draft: (data: GameData, collector: (die: DieDef) => void) => void): PoolCardDef {
+    this.draft[name] = draft;
+    return this;
+  }
+  setDescription(description: string): PoolCardDef {
+    this.description = description;
+    return this;
+  }
+  addKeyword(keyword: string): PoolCardDef {
+    this.keywords.push(keyword);
+    return this;
+  }
+  static items: {[name:string]: PoolCardDef} = {};
+  static register(def: PoolCardDef) {
+    PoolCardDef.items[def.name] = def;
+  }
+}
+
+PoolCardDef.register(
+  new PoolCardDef('wounded')
+  .setDescription('COMBATTIMENTO: aggiungi 1 dado WOUNDED')
+  .addKeyword('combattimento')
+  .addDraft('fight', (data: GameData, collector: (die: DieDef) => void) => {
+    collector(DieDef.items['wounded']);
+  })
+)

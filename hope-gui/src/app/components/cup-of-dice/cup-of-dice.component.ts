@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChallengeCommonsService, ChallengeDef } from 'src/app/services/challenge-commons.service';
 import { DiceCommonsService, DieDef, RolledDie } from 'src/app/services/dice-commons.service';
-import { EncounterAction, GameScene, GameService } from 'src/app/services/game.service';
+import { EncounterAction, GameScene, GameService, PoolCardDef } from 'src/app/services/game.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
@@ -35,6 +35,14 @@ export class CupOfDiceComponent implements OnInit {
     this.encounter = new GameSceneWrap(this.scene);
     this.tags = this.shared.data.play.tags;
     this.encounter.challenge.actions.forEach(action => this.addDie(this.dice.defs['cancel']));
+    this.shared.data.play.pool.forEach(card => {
+      let draft = PoolCardDef.items[card].draft['fight'];
+      if (draft) {
+        draft(this.shared.data, (die: DieDef) => {
+          this.addDie(die);
+        });
+      }
+    });
   }
 
   addDie(def: DieDef) {

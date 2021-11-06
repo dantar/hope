@@ -8,12 +8,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { CupOfDiceComponent } from './components/cup-of-dice/cup-of-dice.component';
 import { MainBoardComponent } from './components/main-board/main-board.component';
+import { CardPoolComponent } from './components/card-pool/card-pool.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CupOfDiceComponent,
-    MainBoardComponent
+    MainBoardComponent,
+    CardPoolComponent
   ],
   imports: [
     BrowserModule,

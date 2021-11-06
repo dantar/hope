@@ -1,4 +1,5 @@
 <div class="bg" *ngIf="shared.data">
+  <div app-card-pool [pool]="shared.data.play.pool"></div>
   <div *ngIf="dice.defs">
     <router-outlet></router-outlet>
     <div *ngIf="shared.data.play.scene">

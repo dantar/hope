@@ -2,6 +2,7 @@
     "name": "hope",
     "dice": [
         {"name": "fight", "faces": ["miss locked", "miss", "(hit)", "hit", "hit", "crit"]},
+        {"name": "wounded", "faces": ["-", "-", "-", "-", "drop", "drop"]},
         {"name": "cancel", "faces": ["-", "-", "-", "(cancel)", "(cancel)", "cancel"]}
     ]
 }

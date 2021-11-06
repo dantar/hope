@@ -23,7 +23,11 @@ export class DiceCommonsService {
     this.http.get<DiceData>('./assets/dice.json').subscribe(data => {
       this.data = data;
       this.defs = {};
-      data.dice.forEach(die => this.defs[die.name] = die);
+      data.dice.forEach(die => {
+        DieDef.register(die);
+        console.log('register die', die);
+        this.defs[die.name] = die;
+      });
     })
   }
 
@@ -41,6 +45,10 @@ export class DiceData {
 export class DieDef {
   name: string;
   faces: string[];
+  static items: {[name:string]: DieDef} = {};
+  static register(def: DieDef) {
+    DieDef.items[def.name] = def;
+  }
 }
 
 export class RolledDie {
@@ -62,7 +70,6 @@ export class FaceEffect {
   name: string;
   execute: (game: GameData) => void;
 }
-
 
 DiceCommonsService.registerFace({
   name: 'hit',
@@ -130,5 +137,12 @@ DiceCommonsService.registerFace({
     } else {
       game.play.tags.push('(cancel)');
     }
+  }
+});
+
+DiceCommonsService.registerFace({
+  name: 'drop',
+  execute: (game: GameData) => {
+    // TODO: drop face or abort mission
   }
 });
